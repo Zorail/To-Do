@@ -11,6 +11,9 @@ import UIKit
 
 
 class ChecklistViewController: UITableViewController,ItemDetailViewControllerDelegate {
+    
+    var checklist:Checklist!
+    
     func ItemDetailViewControllerDidCancel(_ controller: ItemDetailViewController) {
         dismiss(animated: true, completion: nil)
     }
@@ -51,7 +54,7 @@ class ChecklistViewController: UITableViewController,ItemDetailViewControllerDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        title = checklist.name
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
