@@ -40,5 +40,8 @@ class AllListsViewController: UITableViewController {
             return UITableViewCell(style: .default, reuseIdentifier: cellIdentifier)
         }
     }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "ShowChecklist", sender: nil)
+    }
 
 }
