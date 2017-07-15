@@ -44,18 +44,7 @@ class AllListsViewController: UITableViewController,ListDetailViewControllerDele
     required init?(coder aDecoder: NSCoder) {
         lists = [Checklist]()
         super.init(coder: aDecoder)
-        
-        var list = Checklist(name: "Birthdays")
-        lists.append(list)
-        
-        list = Checklist(name: "Groceries")
-        lists.append(list)
-        
-        list = Checklist(name: "Cool Apps")
-        lists.append(list)
-        
-        list = Checklist(name: "To-Do")
-        lists.append(list)
+        loadChecklists()
         
     }
     
@@ -120,5 +109,30 @@ class AllListsViewController: UITableViewController,ListDetailViewControllerDele
         
         present(navigationController, animated: true, completion: nil)
     }
-
+    func documentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        
+        return paths[0]
+    }
+    func dataFilePath() -> URL {
+        
+        return documentsDirectory().appendingPathComponent("Checklists.plist")
+    }
+    func saveChecklists(){
+        
+        let data = NSMutableData()
+        let archiver = NSKeyedArchiver(forWritingWith: data)
+        
+        archiver.encode(lists, forKey: "Checklists")
+        archiver.finishEncoding()
+        data.write(to: dataFilePath(), atomically: true)
+    }
+    func loadChecklists(){
+     let path = dataFilePath()
+        if let data = try? Data(contentsOf: path){
+          let unArchiver = NSKeyedUnarchiver(forReadingWith: data)
+          lists = unArchiver.decodeObject(forKey: "Checklists") as! [Checklist]
+          unArchiver.finishDecoding()
+        }
+    }
 }
